@@ -50,17 +50,31 @@
                     Limit dolub! Növbəti haqq: <span id="timer-display">12:00:00</span>
                 </div>
 
-                <button class="action-btn" id="water-btn" onclick="startAd()">
-                    <div class="btn-content">
-                        <i class="fas fa-tint"></i>
-                        <span>Ağacı Sula</span>
-                    </div>
-                    <div class="btn-loader" id="loader"></div>
-                </button>
+                <div class="actions-container">
+                    <button class="action-btn" id="water-btn" onclick="startAd()">
+                        <div class="btn-content">
+                            <i class="fas fa-tint"></i>
+                            <span>Ağacı Sula</span>
+                        </div>
+                    </button>
 
-                <button class="mini-info-btn" onclick="toggleInfo()">
-                    <i class="fas fa-question-circle"></i> Necə qazanmaq olar?
-                </button>
+                    <button class="info-modern-btn" onclick="toggleInfo()">
+                        <div class="info-icon"><i class="fas fa-lightbulb"></i></div>
+                        <span>Sistem necə işləyir?</span>
+                    </button>
+                </div>
+
+                <div id="info-overlay" class="info-overlay" onclick="toggleInfo()">
+                    <div class="info-content" onclick="event.stopPropagation()">
+                        <h3>Qazanc Sistemi</h3>
+                        <p>Hər sulama 1% inkişaf verir. 50 reklamdan bir 12 saatlıq limit tətbiq olunur.</p>
+                        <div class="popup-table">
+                            <div class="p-row"><span>LVL 1</span> <b>0.0002 ₼</b></div>
+                            <div class="p-row gold"><span>LVL 7</span> <b>0.1500 ₼</b></div>
+                        </div>
+                        <button class="close-btn" onclick="toggleInfo()">Anladım</button>
+                    </div>
+                </div>
             </section>
         </main>
 
