@@ -1,95 +1,106 @@
-let balance = 0.00;
-let growth = 0;
-let level = 1;
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Magic Tree Evolution</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="main-header">
+            <div class="user-profile">
+                <div class="avatar-ring">
+                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Lucky" alt="avatar" class="avatar">
+                </div>
+                <div class="user-text">
+                    <span class="welcome">Xoş gəldin,</span>
+                    <span class="username">Farmer_001</span>
+                </div>
+            </div>
+            <div class="wallet-badge">
+                <i class="fas fa-coins"></i>
+                <span id="balance">0.00</span> ₼
+            </div>
+        </header>
 
-// Təkamül Mərhələləri
-const stages = [
-    "🌱", // Lvl 1: Toxum
-    "🌿", // Lvl 2: Cücərti
-    "☘️", // Lvl 3: Balaca kol
-    "🌳", // Lvl 4: Böyük ağac
-    "🍎", // Lvl 5: Meyvəli ağac
-    "💰", // Lvl 6: Pul ağacı
-    "💎"  // Lvl 7: Brilliant ağac
-];
+        <main class="content-area">
+            <section id="home-section" class="page active">
+                <div class="tree-card">
+                    <div class="level-indicator">Səviyyə <span id="lvl-num">1</span></div>
+                    
+                    <div class="tree-visual-zone">
+                        <div id="main-tree" class="tree-emoji">🌱</div>
+                        <div class="glow-effect"></div>
+                    </div>
 
-function startAd() {
-    const btn = document.querySelector('.action-btn');
-    const loader = document.getElementById('loader');
-    const tree = document.getElementById('main-tree');
+                    <div class="growth-box">
+                        <div class="growth-header">
+                            <span>İnkişaf Mərhələsi</span>
+                            <span id="growth-percent">0%</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-fill" id="progress-bar"></div>
+                            <span id="bar-label">Böyüməyə az qaldı</span>
+                        </div>
+                    </div>
+                </div>
 
-    if (btn.disabled) return;
+                <button class="action-btn" onclick="startAd()">
+                    <div class="btn-content">
+                        <i class="fas fa-tint"></i>
+                        <span>Ağacı Sula (Reklam İzlə)</span>
+                    </div>
+                    <div class="btn-loader" id="loader"></div>
+                </button>
+            </section>
 
-    // Reklam effekti başlayır
-    btn.disabled = true;
-    loader.style.width = "0%";
-    loader.style.transition = "width 2s linear";
-    
-    setTimeout(() => loader.style.width = "100%", 50);
+            <section id="tasks-section" class="page">
+                <h2 class="section-title">Bonus Qazan</h2>
+                <div class="task-list">
+                    <div class="task-item">
+                        <i class="fab fa-telegram"></i>
+                        <div class="t-info"><strong>Rəsmi Kanal</strong><span>+0.20 ₼</span></div>
+                        <button class="t-btn">Qatıl</button>
+                    </div>
+                    <div class="task-item">
+                        <i class="fas fa-user-plus"></i>
+                        <div class="t-info"><strong>Dostunu Dəvət Et</strong><span>+1.00 ₼</span></div>
+                        <button class="t-btn">Dəvət</button>
+                    </div>
+                </div>
+            </section>
 
-    setTimeout(() => {
-        // Qazanc və İnkişaf
-        balance += 0.05;
-        growth += 25; // Hər 4 reklamda 1 səviyyə artır
+            <section id="withdraw-section" class="page">
+                <h2 class="section-title">Vəsaitin Çıxarılması</h2>
+                <div class="withdraw-panel">
+                    <div class="w-balance">
+                        <small>Mövcud balans</small>
+                        <h2><span id="withdraw-bal">0.00</span> AZN</h2>
+                    </div>
+                    <input type="text" class="w-input" placeholder="M10 və ya Kart nömrəsi">
+                    <button class="w-btn">Ödəniş Tələb Et</button>
+                    <p class="w-note">Minimum çıxarış 5.00 AZN təşkil edir.</p>
+                </div>
+            </section>
+        </main>
 
-        if (growth >= 100) {
-            growth = 0;
-            level++;
-            triggerEvolution();
-        }
-
-        updateUI();
-        
-        // Düyməni sıfırla
-        btn.disabled = false;
-        loader.style.transition = "none";
-        loader.style.width = "0%";
-        
-        // Balaca atlanma effekti
-        tree.style.transform = "scale(1.2)";
-        setTimeout(() => tree.style.transform = "scale(1)", 200);
-
-    }, 2000);
-}
-
-function triggerEvolution() {
-    const tree = document.getElementById('main-tree');
-    tree.style.filter = "brightness(2) blur(5px)";
-    
-    setTimeout(() => {
-        const stageIdx = Math.min(level - 1, stages.length - 1);
-        tree.innerText = stages[stageIdx];
-        tree.style.filter = "brightness(1) blur(0px)";
-        
-        // Telegram vibrasiyası (əgər varsa)
-        if (window.Telegram && window.Telegram.WebApp) {
-            window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
-        }
-    }, 400);
-}
-
-function updateUI() {
-    document.getElementById('balance').innerText = balance.toFixed(2);
-    document.getElementById('withdraw-bal').innerText = balance.toFixed(2);
-    document.getElementById('lvl-num').innerText = level;
-    document.getElementById('progress-bar').style.width = growth + "%";
-    document.getElementById('growth-percent').innerText = growth + "%";
-}
-
-function showPage(pageId, element) {
-    // Səhifələri gizlə/göstər
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(pageId + '-section').classList.add('active');
-
-    // Menyu düymələrini yenilə
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    element.classList.add('active');
-}
-
-// İlkin başlatma
-window.onload = () => {
-    if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.expand();
-        window.Telegram.WebApp.ready();
-    }
-};
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="showPage('home', this)">
+                <i class="fas fa-seedling"></i>
+                <span>Bağça</span>
+            </button>
+            <button class="nav-item" onclick="showPage('tasks', this)">
+                <i class="fas fa-star"></i>
+                <span>Tapşırıq</span>
+            </button>
+            <button class="nav-item" onclick="showPage('withdraw', this)">
+                <i class="fas fa-wallet"></i>
+                <span>Cüzdan</span>
+            </button>
+        </nav>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
