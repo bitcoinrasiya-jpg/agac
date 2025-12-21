@@ -56,70 +56,70 @@
                     <div class="btn-loader" id="loader"></div>
                 </button>
 
-                <div class="info-container">
-                    <div class="info-header">
-                        <i class="fas fa-info-circle"></i>
-                        <span>Necə Qazanmaq Olar?</span>
+                <div class="info-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion()">
+                        <div class="header-left">
+                            <i class="fas fa-question-circle"></i>
+                            <span>Necə qazanmaq olar?</span>
+                        </div>
+                        <i class="fas fa-chevron-down" id="acc-icon"></i>
                     </div>
-                    <p class="info-desc">Hər sula düyməsinə basdıqda reklam izləyirsən və ağacın böyüyür. Səviyyə artdıqca qazancın çoxalır!</p>
                     
-                    <div class="tier-table">
-                        <div class="tier-row header">
-                            <span>Səviyyə</span>
-                            <span>Mərhələ</span>
-                            <span>Qazanc</span>
+                    <div class="accordion-content" id="acc-content">
+                        <p class="info-desc">Hər sula düyməsinə basdıqda reklam izləyirsən və ağacın böyüyür. Səviyyə artdıqca hər reklamdan qazandığın məbləğ də artır!</p>
+                        
+                        <div class="tier-table">
+                            <div class="tier-row header">
+                                <span>Səviyyə</span>
+                                <span>Mərhələ</span>
+                                <span>Qazanc</span>
+                            </div>
+                            <div class="tier-row">
+                                <span>LVL 1-2</span>
+                                <span>🌱 Toxum</span>
+                                <span>0.05 ₼</span>
+                            </div>
+                            <div class="tier-row">
+                                <span>LVL 3-4</span>
+                                <span>☘️ Kol</span>
+                                <span>0.10 ₼</span>
+                            </div>
+                            <div class="tier-row">
+                                <span>LVL 5-6</span>
+                                <span>🌳 Ağac</span>
+                                <span>0.25 ₼</span>
+                            </div>
+                            <div class="tier-row highlight">
+                                <span>LVL 7</span>
+                                <span>💎 Final</span>
+                                <span>0.50 ₼</span>
+                            </div>
                         </div>
-                        <div class="tier-row">
-                            <span>LVL 1-2</span>
-                            <span>🌱 Toxum</span>
-                            <span>0.05 ₼</span>
-                        </div>
-                        <div class="tier-row">
-                            <span>LVL 3-4</span>
-                            <span>☘️ Kol</span>
-                            <span>0.10 ₼</span>
-                        </div>
-                        <div class="tier-row">
-                            <span>LVL 5-6</span>
-                            <span>🌳 Ağac</span>
-                            <span>0.25 ₼</span>
-                        </div>
-                        <div class="tier-row highlight">
-                            <span>LVL 7</span>
-                            <span>💎 Final</span>
-                            <span>0.50 ₼</span>
-                        </div>
+                        <p class="max-info">* Maksimum inkişaf: Level 7</p>
                     </div>
-                    <p class="max-info">* Maksimum inkişaf: Level 7</p>
                 </div>
             </section>
 
             <section id="tasks-section" class="page">
-                <h2 class="section-title">Tapşırıqlar</h2>
+                <h2 class="section-title">Bonus Tapşırıqlar</h2>
                 <div class="task-list">
                     <div class="task-item">
                         <i class="fab fa-telegram"></i>
-                        <div class="t-info"><strong>Kanala Abunə Ol</strong><span>+0.20 ₼</span></div>
-                        <button class="t-btn">Et</button>
-                    </div>
-                    <div class="task-item">
-                        <i class="fas fa-user-plus"></i>
-                        <div class="t-info"><strong>Dostunu Dəvət Et</strong><span>+1.00 ₼</span></div>
-                        <button class="t-btn">Dəvət</button>
+                        <div class="t-info"><strong>Rəsmi Kanal</strong><span>+0.20 ₼</span></div>
+                        <button class="t-btn">Qatıl</button>
                     </div>
                 </div>
             </section>
 
             <section id="withdraw-section" class="page">
-                <h2 class="section-title">Vəsait Çıxarışı</h2>
+                <h2 class="section-title">Balans</h2>
                 <div class="withdraw-panel">
                     <div class="w-balance">
-                        <small>Mövcud Balansınız</small>
+                        <small>Çıxarıla bilən məbləğ</small>
                         <h2><span id="withdraw-bal">0.00</span> AZN</h2>
                     </div>
                     <input type="text" class="w-input" placeholder="M10 və ya Kart nömrəsi">
-                    <button class="w-btn">Çıxarış Tələbi Göndər</button>
-                    <p class="w-note">Minimum çıxarış: 5.00 AZN</p>
+                    <button class="w-btn">Ödəniş Tələb Et</button>
                 </div>
             </section>
         </main>
