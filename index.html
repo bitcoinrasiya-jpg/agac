@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hypers Ads - Magic Tree</title>
+    <title>Hypers Ads</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -18,7 +18,7 @@
                 </div>
                 <div class="user-text">
                     <span class="welcome">Xoş gəldin,</span>
-                    <span id="user-full-name" class="username">İstifadəçi</span>
+                    <span id="user-full-name" class="username">Yüklənir...</span>
                 </div>
             </div>
             <div class="wallet-badge">
@@ -30,7 +30,7 @@
         <main class="content-area">
             <section id="home-section" class="page active">
                 <div class="tree-card">
-                    <div class="level-indicator">LVL <span id="lvl-num">1</span></div>
+                    <div class="level-indicator">SEVİYYƏ <span id="lvl-num">1</span></div>
                     <div class="tree-visual-zone">
                         <div id="main-tree" class="tree-emoji">🌱</div>
                     </div>
@@ -44,7 +44,11 @@
                     </div>
                 </div>
 
-                <button class="action-btn" onclick="startAd()">
+                <div id="cooldown-timer" style="display:none; text-align:center; color:#ff4444; margin: 10px 0; font-weight:bold; font-size:14px;">
+                    Limit dolub! Növbəti haqq: <span id="timer-display">12:00:00</span>
+                </div>
+
+                <button class="action-btn" id="water-btn" onclick="startAd()">
                     <div class="btn-content">
                         <i class="fas fa-tint"></i>
                         <span>Ağacı Sula</span>
@@ -59,14 +63,11 @@
                 <div id="info-overlay" class="info-overlay">
                     <div class="info-content">
                         <h3>Qazanc Sistemi</h3>
-                        <p>Hər reklam ağacı 1% böyüdür. Səviyyə artdıqca gəliriniz dəyişir:</p>
+                        <p>Hər reklam ağacı 1% böyüdür. 50 reklamdan bir 12 saat istirahət tələb olunur.</p>
                         <div class="popup-table">
                             <div class="p-row"><span>LVL 1</span> <b>0.0002 ₼</b></div>
                             <div class="p-row"><span>LVL 2</span> <b>0.0005 ₼</b></div>
                             <div class="p-row"><span>LVL 3</span> <b>0.0010 ₼</b></div>
-                            <div class="p-row"><span>LVL 4</span> <b>0.0050 ₼</b></div>
-                            <div class="p-row"><span>LVL 5</span> <b>0.0100 ₼</b></div>
-                            <div class="p-row"><span>LVL 6</span> <b>0.0500 ₼</b></div>
                             <div class="p-row gold"><span>LVL 7</span> <b>0.1500 ₼</b></div>
                         </div>
                         <button class="close-btn" onclick="toggleInfo()">Bağla</button>
