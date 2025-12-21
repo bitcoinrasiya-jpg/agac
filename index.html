@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src='//libtl.com/sdk.js' data-zone='10180357' data-sdk='show_10180357'></script>
 </head>
 <body>
     <div class="app-shell">
@@ -23,7 +24,7 @@
             </div>
             <div class="wallet-badge">
                 <i class="fas fa-coins"></i>
-                <span id="balance">0.00</span> ₼
+                <span id="balance">0.0000</span> ₼
             </div>
         </header>
 
@@ -58,41 +59,34 @@
 
                 <div id="info-overlay" class="info-overlay">
                     <div class="info-content">
-                        <div class="info-header-popup">
-                            <i class="fas fa-gem"></i>
-                            <h3>Qazanc Sistemi</h3>
-                        </div>
-                        <p class="popup-text">Ağacı suladıqca o təkamül edir. Səviyyə artdıqca qazancınız aşağıdakı kimi dəyişir:</p>
+                        <h3>Qazanc Sistemi</h3>
+                        <p>Hər reklam ağacı 1% böyüdür. Səviyyə artdıqca gəlir və böyümə limiti dəyişir.</p>
                         <div class="popup-table">
-                            <div class="p-row"><span>LVL 1-2</span> <b>0.05 ₼</b></div>
-                            <div class="p-row"><span>LVL 3-4</span> <b>0.10 ₼</b></div>
-                            <div class="p-row"><span>LVL 5-6</span> <b>0.25 ₼</b></div>
-                            <div class="p-row gold"><span>LVL 7</span> <b>0.50 ₼</b></div>
+                            <div class="p-row"><span>LVL 1</span> <b>0.0002 ₼</b></div>
+                            <div class="p-row"><span>LVL 2</span> <b>0.0005 ₼</b></div>
+                            <div class="p-row"><span>LVL 3</span> <b>0.0010 ₼</b></div>
+                            <div class="p-row"><span>LVL 4</span> <b>0.0050 ₼</b></div>
+                            <div class="p-row"><span>LVL 5</span> <b>0.0100 ₼</b></div>
+                            <div class="p-row"><span>LVL 6</span> <b>0.0500 ₼</b></div>
+                            <div class="p-row gold"><span>LVL 7</span> <b>0.1500 ₼</b></div>
                         </div>
-                        <button class="close-btn" onclick="toggleInfo()">Anladım</button>
+                        <button class="close-btn" onclick="toggleInfo()">Bağla</button>
                     </div>
                 </div>
             </section>
-
-            <section id="tasks-section" class="page">
-                </section>
-
-            <section id="withdraw-section" class="page">
-                </section>
+            <section id="tasks-section" class="page"></section>
+            <section id="withdraw-section" class="page"></section>
         </main>
 
         <nav class="bottom-nav">
             <button class="nav-item active" onclick="showPage('home', this)">
-                <i class="fas fa-home"></i>
-                <span>Ana Səhifə</span>
+                <i class="fas fa-home"></i><span>Ana Səhifə</span>
             </button>
             <button class="nav-item" onclick="showPage('tasks', this)">
-                <i class="fas fa-tasks"></i>
-                <span>Tapşırıqlar</span>
+                <i class="fas fa-tasks"></i><span>Tapşırıqlar</span>
             </button>
             <button class="nav-item" onclick="showPage('withdraw', this)">
-                <i class="fas fa-wallet"></i>
-                <span>Çıxarış</span>
+                <i class="fas fa-wallet"></i><span>Çıxarış</span>
             </button>
         </nav>
     </div>
