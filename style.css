@@ -10,83 +10,61 @@
 
 body {
     margin: 0; background-color: var(--bg); color: var(--text);
-    font-family: 'Segoe UI', Roboto, sans-serif; overflow-x: hidden;
+    font-family: 'Segoe UI', sans-serif; overflow: hidden;
 }
 
-.app-shell { min-height: 100vh; display: flex; flex-direction: column; }
+.app-shell { height: 100vh; display: flex; flex-direction: column; }
 
-.main-header {
-    padding: 20px; display: flex; justify-content: space-between; align-items: center;
-    background: linear-gradient(to bottom, #161b22, transparent);
-}
-
+.main-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; }
 .user-profile { display: flex; align-items: center; gap: 12px; }
-.avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
-.username { display: block; font-weight: bold; font-size: 14px; color: var(--primary); }
-.welcome { font-size: 10px; color: #888; }
+.avatar { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
+.username { font-weight: bold; color: var(--primary); font-size: 14px; }
+.wallet-badge { background: rgba(0, 255, 136, 0.1); padding: 8px 15px; border-radius: 20px; font-weight: bold; border: 1px solid var(--primary); }
 
-.wallet-badge {
-    background: rgba(0, 255, 136, 0.1); border: 1px solid var(--primary);
-    padding: 8px 16px; border-radius: 20px; font-weight: bold;
-}
-
-.page { display: none; padding: 20px; animation: slideUp 0.3s ease; }
+.page { display: none; padding: 20px; animation: fadeIn 0.3s; }
 .page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-@keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+.tree-card { background: var(--card); border-radius: 30px; padding: 30px; text-align: center; position: relative; border: 1px solid #21262d; }
+.tree-emoji { font-size: 100px; margin: 20px 0; }
+.progress-container { height: 10px; background: #000; border-radius: 5px; overflow: hidden; margin-top: 15px; }
+.progress-fill { width: 0%; height: 100%; background: var(--primary); transition: 0.5s; }
 
-/* Ağac Kartı */
-.tree-card {
-    background: var(--card); border-radius: 30px; padding: 40px 20px;
-    text-align: center; position: relative; border: 1px solid #21262d;
-}
-.level-indicator {
-    position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
-    background: var(--primary); color: #000; padding: 4px 15px; border-radius: 10px; font-weight: 800; font-size: 11px;
-}
-.tree-emoji { font-size: 110px; transition: 0.5s; }
-
-.progress-container { height: 12px; background: #0d1117; border-radius: 10px; overflow: hidden; border: 1px solid #30363d; margin-top: 20px; }
-.progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); transition: 0.5s; }
-
-/* Böyük Düymə */
 .action-btn {
     width: 100%; height: 60px; border-radius: 18px; border: none; margin-top: 20px;
     background: linear-gradient(45deg, var(--primary), var(--secondary));
-    color: #000; font-size: 16px; font-weight: bold; position: relative; overflow: hidden;
+    color: #000; font-size: 17px; font-weight: bold; position: relative; overflow: hidden;
 }
 .btn-loader { position: absolute; left: 0; bottom: 0; height: 4px; background: rgba(0,0,0,0.3); width: 0%; }
 
-/* Akkordeon Bölməsi */
-.info-accordion {
-    margin-top: 25px;
-    background: linear-gradient(145deg, #1c2128, #161b22);
-    border-radius: 16px;
-    border: 1px solid rgba(0, 255, 136, 0.1);
-    overflow: hidden;
-    margin-bottom: 120px;
+/* Necə qazanmaq olar butonu */
+.mini-info-btn {
+    display: block; margin: 20px auto; background: none; border: none;
+    color: #8b949e; font-size: 14px; cursor: pointer; text-decoration: underline;
 }
-.accordion-header {
-    padding: 18px; display: flex; justify-content: space-between; align-items: center;
-    cursor: pointer; background: rgba(0, 255, 136, 0.03);
-}
-.header-left { display: flex; align-items: center; gap: 12px; font-weight: 600; color: var(--primary); }
-#acc-icon { transition: 0.3s; color: #888; }
-.accordion-content {
-    max-height: 0; overflow: hidden; transition: all 0.4s ease-out;
-    background: rgba(0, 0, 0, 0.2); padding: 0 18px;
-}
-.accordion-content.open { max-height: 500px; padding: 18px; }
-.tier-table { background: #0d1117; border-radius: 12px; padding: 12px; margin-top: 15px; }
-.tier-row { display: flex; justify-content: space-between; font-size: 11px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.tier-row.highlight { color: var(--primary); font-weight: bold; }
 
-/* Alt Menyu (Orijinal Böyük Ölçü) */
-.bottom-nav {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    background: #161b22; display: flex; justify-content: space-around;
-    padding: 15px 10px 35px 10px; border-top: 1px solid #30363d; z-index: 1000;
+/* Popup Overlay */
+.info-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center;
+    z-index: 2000; padding: 20px;
 }
-.nav-item { background: none; border: none; color: #8b949e; display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; font-size: 13px; }
+.info-content {
+    background: #1c2128; padding: 25px; border-radius: 25px; border: 1px solid var(--primary);
+    width: 100%; max-width: 320px; text-align: center;
+}
+.info-header-popup i { font-size: 30px; color: var(--primary); margin-bottom: 10px; }
+.popup-table { background: rgba(0,0,0,0.3); border-radius: 15px; padding: 10px; margin: 15px 0; }
+.p-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #30363d; font-size: 13px; }
+.p-row.gold { color: var(--primary); border: none; }
+.close-btn { width: 100%; padding: 12px; background: var(--primary); border: none; border-radius: 12px; font-weight: bold; }
+
+/* Alt Menyu */
+.bottom-nav {
+    position: fixed; bottom: 0; width: 100%; background: #161b22;
+    display: flex; padding: 15px 10px 35px 10px; border-top: 1px solid #30363d;
+}
+.nav-item { flex: 1; background: none; border: none; color: #484f58; display: flex; flex-direction: column; align-items: center; gap: 5px; }
 .nav-item.active { color: var(--primary); }
-.nav-item i { font-size: 24px; }
+.nav-item i { font-size: 22px; }
+.nav-item span { font-size: 11px; }
