@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html lang="az">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Magic Tree Evolution</title>
+    <title>Hypers Ads - Magic Tree</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div class="app-shell">
         <header class="main-header">
             <div class="user-profile">
                 <div class="avatar-ring">
-                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Lucky" alt="avatar" class="avatar">
+                    <img src="" id="user-photo" alt="avatar" class="avatar" style="display:none;">
+                    <i class="fas fa-user-circle" id="default-avatar" style="font-size: 40px; color: var(--primary);"></i>
                 </div>
                 <div class="user-text">
-                    <span class="welcome">Xoş gəldin,</span>
-                    <span class="username">Farmer_001</span>
+                    <span class="welcome">Hoş geldin,</span>
+                    <span id="user-full-name" class="username">Yükleniyor...</span>
                 </div>
             </div>
             <div class="wallet-badge">
@@ -28,7 +30,7 @@
         <main class="content-area">
             <section id="home-section" class="page active">
                 <div class="tree-card">
-                    <div class="level-indicator">Səviyyə <span id="lvl-num">1</span></div>
+                    <div class="level-indicator">SEVİYE <span id="lvl-num">1</span></div>
                     
                     <div class="tree-visual-zone">
                         <div id="main-tree" class="tree-emoji">🌱</div>
@@ -37,12 +39,11 @@
 
                     <div class="growth-box">
                         <div class="growth-header">
-                            <span>İnkişaf Mərhələsi</span>
+                            <span id="bar-label">Büyüme Durumu</span>
                             <span id="growth-percent">0%</span>
                         </div>
                         <div class="progress-container">
                             <div class="progress-fill" id="progress-bar"></div>
-                            <span id="bar-label">Böyüməyə az qaldı</span>
                         </div>
                     </div>
                 </div>
@@ -50,38 +51,38 @@
                 <button class="action-btn" onclick="startAd()">
                     <div class="btn-content">
                         <i class="fas fa-tint"></i>
-                        <span>Ağacı Sula (Reklam İzlə)</span>
+                        <span>Ağacı Sula (Reklam İzle)</span>
                     </div>
                     <div class="btn-loader" id="loader"></div>
                 </button>
             </section>
 
             <section id="tasks-section" class="page">
-                <h2 class="section-title">Bonus Qazan</h2>
+                <h2 class="section-title">Görevler</h2>
                 <div class="task-list">
                     <div class="task-item">
                         <i class="fab fa-telegram"></i>
-                        <div class="t-info"><strong>Rəsmi Kanal</strong><span>+0.20 ₼</span></div>
-                        <button class="t-btn">Qatıl</button>
+                        <div class="t-info"><strong>Kanala Katıl</strong><span>+0.20 ₼</span></div>
+                        <button class="t-btn">Yap</button>
                     </div>
                     <div class="task-item">
                         <i class="fas fa-user-plus"></i>
-                        <div class="t-info"><strong>Dostunu Dəvət Et</strong><span>+1.00 ₼</span></div>
-                        <button class="t-btn">Dəvət</button>
+                        <div class="t-info"><strong>Arkadaş Davet Et</strong><span>+1.00 ₼</span></div>
+                        <button class="t-btn">Davet</button>
                     </div>
                 </div>
             </section>
 
             <section id="withdraw-section" class="page">
-                <h2 class="section-title">Vəsaitin Çıxarılması</h2>
+                <h2 class="section-title">Para Çekme</h2>
                 <div class="withdraw-panel">
                     <div class="w-balance">
-                        <small>Mövcud balans</small>
+                        <small>Mevcut Bakiyeniz</small>
                         <h2><span id="withdraw-bal">0.00</span> AZN</h2>
                     </div>
-                    <input type="text" class="w-input" placeholder="M10 və ya Kart nömrəsi">
-                    <button class="w-btn">Ödəniş Tələb Et</button>
-                    <p class="w-note">Minimum çıxarış 5.00 AZN təşkil edir.</p>
+                    <input type="text" class="w-input" placeholder="Kart Numarası veya Cüzdan">
+                    <button class="w-btn">Çekim Talebi Gönder</button>
+                    <p class="w-note">Minimum çekim tutarı 5.00 AZN'dir.</p>
                 </div>
             </section>
         </main>
@@ -89,11 +90,11 @@
         <nav class="bottom-nav">
             <button class="nav-item active" onclick="showPage('home', this)">
                 <i class="fas fa-seedling"></i>
-                <span>Bağça</span>
+                <span>Bahçe</span>
             </button>
             <button class="nav-item" onclick="showPage('tasks', this)">
-                <i class="fas fa-star"></i>
-                <span>Tapşırıq</span>
+                <i class="fas fa-tasks"></i>
+                <span>Görevler</span>
             </button>
             <button class="nav-item" onclick="showPage('withdraw', this)">
                 <i class="fas fa-wallet"></i>
