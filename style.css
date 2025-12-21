@@ -6,7 +6,7 @@
     --text: #ffffff;
 }
 
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
 
 body {
     margin: 0; background-color: var(--bg); color: var(--text);
@@ -19,16 +19,20 @@ body {
 .user-profile { display: flex; align-items: center; gap: 12px; }
 .avatar { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
 .username { font-weight: bold; color: var(--primary); font-size: 14px; }
-.wallet-badge { background: rgba(0, 255, 136, 0.1); padding: 8px 15px; border-radius: 20px; font-weight: bold; border: 1px solid var(--primary); }
+
+.wallet-badge { 
+    background: rgba(0, 255, 136, 0.1); padding: 8px 15px; border-radius: 20px; 
+    font-weight: bold; border: 1px solid var(--primary); font-family: monospace; 
+}
 
 .page { display: none; padding: 20px; animation: fadeIn 0.3s; }
 .page.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .tree-card { background: var(--card); border-radius: 30px; padding: 30px; text-align: center; position: relative; border: 1px solid #21262d; }
-.tree-emoji { font-size: 100px; margin: 20px 0; }
+.tree-emoji { font-size: 100px; margin: 15px 0; transition: 0.5s; }
 .progress-container { height: 10px; background: #000; border-radius: 5px; overflow: hidden; margin-top: 15px; }
-.progress-fill { width: 0%; height: 100%; background: var(--primary); transition: 0.5s; }
+.progress-fill { width: 0%; height: 100%; background: var(--primary); transition: 0.4s; }
 
 .action-btn {
     width: 100%; height: 60px; border-radius: 18px; border: none; margin-top: 20px;
@@ -37,34 +41,16 @@ body {
 }
 .btn-loader { position: absolute; left: 0; bottom: 0; height: 4px; background: rgba(0,0,0,0.3); width: 0%; }
 
-/* Necə qazanmaq olar butonu */
-.mini-info-btn {
-    display: block; margin: 20px auto; background: none; border: none;
-    color: #8b949e; font-size: 14px; cursor: pointer; text-decoration: underline;
-}
+.mini-info-btn { display: block; margin: 20px auto; background: none; border: none; color: #8b949e; font-size: 14px; cursor: pointer; text-decoration: underline; }
 
-/* Popup Overlay */
-.info-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center;
-    z-index: 2000; padding: 20px;
-}
-.info-content {
-    background: #1c2128; padding: 25px; border-radius: 25px; border: 1px solid var(--primary);
-    width: 100%; max-width: 320px; text-align: center;
-}
-.info-header-popup i { font-size: 30px; color: var(--primary); margin-bottom: 10px; }
+.info-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+.info-content { background: #1c2128; padding: 25px; border-radius: 25px; border: 1px solid var(--primary); width: 100%; max-width: 320px; text-align: center; }
 .popup-table { background: rgba(0,0,0,0.3); border-radius: 15px; padding: 10px; margin: 15px 0; }
-.p-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #30363d; font-size: 13px; }
+.p-row { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #30363d; font-size: 12px; }
 .p-row.gold { color: var(--primary); border: none; }
 .close-btn { width: 100%; padding: 12px; background: var(--primary); border: none; border-radius: 12px; font-weight: bold; }
 
-/* Alt Menyu */
-.bottom-nav {
-    position: fixed; bottom: 0; width: 100%; background: #161b22;
-    display: flex; padding: 15px 10px 35px 10px; border-top: 1px solid #30363d;
-}
-.nav-item { flex: 1; background: none; border: none; color: #484f58; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.bottom-nav { position: fixed; bottom: 0; width: 100%; background: #161b22; display: flex; padding: 15px 10px 35px 10px; border-top: 1px solid #30363d; }
+.nav-item { flex: 1; background: none; border: none; color: #484f58; display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 11px; }
 .nav-item.active { color: var(--primary); }
 .nav-item i { font-size: 22px; }
-.nav-item span { font-size: 11px; }
