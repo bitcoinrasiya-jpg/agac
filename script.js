@@ -2,69 +2,97 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
-let balance = 0.00;
+let balance = 0.0000;
 let growth = 0;
 let level = 1;
-const stages = ["🌱", "🌿", "☘️", "🌳", "🍎", "💰", "💎"];
 
-// Popup idarəsi
-function toggleInfo() {
-    const overlay = document.getElementById('info-overlay');
-    const isVisible = overlay.style.display === 'flex';
-    overlay.style.display = isVisible ? 'none' : 'flex';
-    tg.HapticFeedback.selectionChanged();
-}
+// Səviyyə Parametrləri: { limit: Faiz hədəfi, reward: Reklam başı qazanc }
+const lvlConfig = {
+    1: { limit: 200, reward: 0.0002 },
+    2: { limit: 300, reward: 0.0005 },
+    3: { limit: 400, reward: 0.0010 },
+    4: { limit: 500, reward: 0.0050 },
+    5: { limit: 700, reward: 0.0100 },
+    6: { limit: 1000, reward: 0.0500 },
+    7: { limit: 999999, reward: 0.1500 } // Maksimum Səviyyə
+};
+
+const stages = ["🌱", "🌿", "☘️", "🌳", "🍎", "💰", "💎"];
 
 function startAd() {
     const btn = document.querySelector('.action-btn');
     const loader = document.getElementById('loader');
+
     if (btn.disabled) return;
-    
     btn.disabled = true;
-    loader.style.width = "0%";
+
+    // Reklam SDK-nı işə salırıq
+    if (typeof show_10180357 === 'function') {
+        show_10180357().then(() => {
+            handleReward();
+        }).catch(() => {
+            handleReward(); // SDK xətası olsa belə istifadəçi qazansın
+        });
+    } else {
+        handleReward(); // Brauzer testi üçün
+    }
+}
+
+function handleReward() {
+    const loader = document.getElementById('loader');
+    const btn = document.querySelector('.action-btn');
     
-    let progress = 0;
+    let progressAnim = 0;
     const interval = setInterval(() => {
-        progress += 5;
-        loader.style.width = progress + "%";
-        if (progress >= 100) clearInterval(interval);
+        progressAnim += 10;
+        loader.style.width = progressAnim + "%";
+        if (progressAnim >= 100) clearInterval(interval);
     }, 100);
 
     setTimeout(() => {
-        let reward = 0.05;
-        if (level >= 3 && level < 5) reward = 0.10;
-        else if (level >= 5 && level < 7) reward = 0.25;
-        else if (level >= 7) reward = 0.50;
+        const config = lvlConfig[level];
+        
+        balance += config.reward;
+        growth += 1; // Hər reklam 1% artırır
 
-        balance += reward;
-        growth += 25; 
-
-        if (growth >= 100) {
+        if (growth >= config.limit && level < 7) {
             growth = 0;
-            if(level < 7) { level++; evolveTree(); }
+            level++;
+            evolveTree();
         }
 
         updateUI();
         btn.disabled = false;
         loader.style.width = "0%";
-        tg.HapticFeedback.impactOccurred('medium');
-    }, 2200);
+        tg.HapticFeedback.impactOccurred('light');
+    }, 1200);
+}
+
+function updateUI() {
+    const config = lvlConfig[level];
+    document.getElementById('balance').innerText = balance.toFixed(4);
+    document.getElementById('lvl-num').innerText = level;
+    
+    // Faiz göstəricisi: (Cari / Limit) * 100
+    let fillPercent = (growth / config.limit) * 100;
+    document.getElementById('progress-bar').style.width = fillPercent + "%";
+    document.getElementById('growth-percent').innerText = `${growth} / ${config.limit} %`;
 }
 
 function evolveTree() {
     const tree = document.getElementById('main-tree');
-    tree.style.filter = "brightness(2) blur(5px)";
+    tree.style.transform = "scale(1.5)";
     setTimeout(() => {
         tree.innerText = stages[Math.min(level - 1, stages.length - 1)];
-        tree.style.filter = "brightness(1) blur(0px)";
+        tree.style.transform = "scale(1)";
         tg.HapticFeedback.notificationOccurred('success');
-    }, 400);
+    }, 300);
 }
 
-function updateUI() {
-    document.getElementById('balance').innerText = balance.toFixed(2);
-    document.getElementById('lvl-num').innerText = level;
-    document.getElementById('progress-bar').style.width = growth + "%";
+function toggleInfo() {
+    const overlay = document.getElementById('info-overlay');
+    overlay.style.display = (overlay.style.display === 'flex') ? 'none' : 'flex';
+    tg.HapticFeedback.selectionChanged();
 }
 
 function showPage(pageId, btn) {
@@ -74,7 +102,6 @@ function showPage(pageId, btn) {
     
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     btn.classList.add('active');
-    tg.HapticFeedback.selectionChanged();
 }
 
 window.onload = () => {
