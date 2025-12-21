@@ -2,7 +2,6 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
-// LOCALSTORAGE İLƏ MƏLUMATLARI BƏRPA ET
 let balance = parseFloat(localStorage.getItem('h_balance')) || 0.0000;
 let growth = parseInt(localStorage.getItem('h_growth')) || 0;
 let level = parseInt(localStorage.getItem('h_level')) || 1;
@@ -21,52 +20,87 @@ const lvlConfig = {
 
 const stages = ["🌱", "🌿", "☘️", "🌳", "🍎", "💰", "💎"];
 
-function saveProgress() {
-    localStorage.setItem('h_balance', balance);
-    localStorage.setItem('h_growth', growth);
-    localStorage.setItem('h_level', level);
-    localStorage.setItem('h_session_ads', sessionAds);
-    if (cooldownTime) localStorage.setItem('h_cooldown_end', cooldownTime);
-    else localStorage.removeItem('h_cooldown_end');
+function showToast(msg) {
+    const toast = document.getElementById('reward-toast');
+    toast.innerText = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
 function startAd() {
     const btn = document.getElementById('water-btn');
     if (btn.disabled || cooldownTime) return;
 
+    // 1. Düyməni dərhal kilitlə (Dublikat klikləri kəsir)
+    btn.disabled = true;
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = "<span>Reklam Yüklənir... Gözləyin</span>";
+
     if (window.show_10180357) {
         window.show_10180357().then(() => {
-            handleReward();
+            // Reklam açıldıqdan sonra 16 saniyə sayırıq
+            let timeLeft = 16;
+            const timerInt = setInterval(() => {
+                btn.innerHTML = `<span>Gözləyin (${timeLeft}s)</span>`;
+                timeLeft--;
+                
+                if (timeLeft < 0) {
+                    clearInterval(timerInt);
+                    handleReward(); // 16 saniyə bitəndə mükafat ver
+                    btn.innerHTML = originalHTML;
+                    btn.disabled = false;
+                }
+            }, 1000);
         }).catch(() => {
-            handleReward(); // SDK xətası olsa belə proses davam etsin
+            // Reklam xətası olsa düyməni geri qaytar
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
+            alert("Reklam hazır deyil, bir az sonra yoxlayın.");
         });
     } else {
-        handleReward(); // Test rejimi üçün
+        // SDK yoxdursa test üçün 3 saniyə gözlət
+        setTimeout(() => {
+            handleReward();
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
+        }, 3000);
     }
 }
 
 function handleReward() {
     const config = lvlConfig[level];
+    
+    // Balans və böyüməni əlavə et
     balance += config.reward;
     growth += 1;
     sessionAds += 1;
 
+    // Səviyyə yoxlaması
     if (growth >= config.limit && level < 7) {
         growth = 0;
         level++;
-        evolveTree();
+        showToast("Səviyyə Artdı! 🚀");
+    } else {
+        showToast(`+${config.reward.toFixed(4)} ₼ Balansınıza gəldi ✅`);
     }
 
-    // 50 REKLAM LİMİTİ YOXLAMASI
+    // 50 reklam limiti
     if (sessionAds >= 50) {
-        let now = new Date().getTime();
-        cooldownTime = now + (12 * 60 * 60 * 1000); // İndiki vaxt + 12 saat
+        cooldownTime = new Date().getTime() + (12 * 60 * 60 * 1000);
         sessionAds = 0;
     }
 
-    saveProgress();
+    save();
     updateUI();
-    tg.HapticFeedback.impactOccurred('light');
+    tg.HapticFeedback.notificationOccurred('success');
+}
+
+function save() {
+    localStorage.setItem('h_balance', balance);
+    localStorage.setItem('h_growth', growth);
+    localStorage.setItem('h_level', level);
+    localStorage.setItem('h_session_ads', sessionAds);
+    if (cooldownTime) localStorage.setItem('h_cooldown_end', cooldownTime);
 }
 
 function updateUI() {
@@ -78,55 +112,29 @@ function updateUI() {
     let fill = (growth / config.limit) * 100;
     document.getElementById('progress-bar').style.width = fill + "%";
     document.getElementById('growth-percent').innerText = `${growth} / ${config.limit} %`;
-
-    checkTimer();
+    checkCooldown();
 }
 
-function checkTimer() {
+function checkCooldown() {
     const btn = document.getElementById('water-btn');
     const timerDiv = document.getElementById('cooldown-timer');
-    const timerDisplay = document.getElementById('timer-display');
-
     if (cooldownTime) {
-        let now = new Date().getTime();
-        let remaining = cooldownTime - now;
-
-        if (remaining > 0) {
+        let diff = cooldownTime - new Date().getTime();
+        if (diff > 0) {
             btn.disabled = true;
             timerDiv.style.display = 'block';
-            
-            let h = Math.floor(remaining / (1000 * 60 * 60));
-            let m = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-            let s = Math.floor((remaining % (1000 * 60)) / 1000);
-            
-            timerDisplay.innerText = `${h}s ${m}d ${s}s`;
-            setTimeout(checkTimer, 1000);
+            let h = Math.floor(diff / 3600000);
+            let m = Math.floor((diff % 3600000) / 60000);
+            let s = Math.floor((diff % 60000) / 1000);
+            document.getElementById('timer-display').innerText = `${h}:${m}:${s}`;
+            setTimeout(checkCooldown, 1000);
         } else {
             cooldownTime = null;
             btn.disabled = false;
             timerDiv.style.display = 'none';
-            saveProgress();
+            localStorage.removeItem('h_cooldown_end');
         }
     }
-}
-
-function evolveTree() {
-    const tree = document.getElementById('main-tree');
-    tree.style.transform = "scale(1.3)";
-    setTimeout(() => tree.style.transform = "scale(1)", 500);
-    tg.HapticFeedback.notificationOccurred('success');
-}
-
-function toggleInfo() {
-    const overlay = document.getElementById('info-overlay');
-    overlay.style.display = (overlay.style.display === 'flex') ? 'none' : 'flex';
-}
-
-function showPage(pageId, btn) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(pageId + '-section').classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    btn.classList.add('active');
 }
 
 window.onload = () => {
