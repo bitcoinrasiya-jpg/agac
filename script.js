@@ -1,18 +1,34 @@
+// Telegram WebApp SDK başlatma
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
+
 let balance = 0.00;
 let growth = 0;
 let level = 1;
 
-// Təkamül Mərhələləri
-const stages = [
-    "🌱", // Lvl 1: Toxum
-    "🌿", // Lvl 2: Cücərti
-    "☘️", // Lvl 3: Balaca kol
-    "🌳", // Lvl 4: Böyük ağac
-    "🍎", // Lvl 5: Meyvəli ağac
-    "💰", // Lvl 6: Pul ağacı
-    "💎"  // Lvl 7: Brilliant ağac
-];
+// Ağaç Evrim Aşamaları
+const stages = ["🌱", "🌿", "☘️", "🌳", "🍎", "💰", "💎"];
 
+// Telegram Kullanıcı Bilgilerini Al
+function initUser() {
+    const user = tg.initDataUnsafe?.user;
+    if (user) {
+        const name = `${user.first_name} ${user.last_name || ""}`.trim();
+        document.getElementById('user-full-name').innerText = name;
+        
+        if (user.photo_url) {
+            const img = document.getElementById('user-photo');
+            img.src = user.photo_url;
+            img.style.display = 'block';
+            document.getElementById('default-avatar').style.display = 'none';
+        }
+    } else {
+        document.getElementById('user-full-name').innerText = "Test Kullanıcısı";
+    }
+}
+
+// Reklam ve Sulama Fonksiyonu
 function startAd() {
     const btn = document.querySelector('.action-btn');
     const loader = document.getElementById('loader');
@@ -20,51 +36,51 @@ function startAd() {
 
     if (btn.disabled) return;
 
-    // Reklam effekti başlayır
     btn.disabled = true;
+    btn.style.opacity = "0.7";
     loader.style.width = "0%";
-    loader.style.transition = "width 2s linear";
     
-    setTimeout(() => loader.style.width = "100%", 50);
+    // Reklam süresi (2 saniye simülasyon)
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += 5;
+        loader.style.width = progress + "%";
+        if (progress >= 100) clearInterval(interval);
+    }, 100);
 
     setTimeout(() => {
-        // Qazanc və İnkişaf
         balance += 0.05;
-        growth += 25; // Hər 4 reklamda 1 səviyyə artır
+        growth += 25; // 4 sula = 1 seviye
 
         if (growth >= 100) {
             growth = 0;
             level++;
-            triggerEvolution();
+            evolveTree();
         }
 
         updateUI();
-        
-        // Düyməni sıfırla
         btn.disabled = false;
-        loader.style.transition = "none";
+        btn.style.opacity = "1";
         loader.style.width = "0%";
         
-        // Balaca atlanma effekti
-        tree.style.transform = "scale(1.2)";
-        setTimeout(() => tree.style.transform = "scale(1)", 200);
-
-    }, 2000);
+        // Telegram Titreşim Efekti
+        tg.HapticFeedback.impactOccurred('medium');
+        
+        // Animasyon
+        tree.style.transform = "scale(1.3) rotate(5deg)";
+        setTimeout(() => tree.style.transform = "scale(1) rotate(0deg)", 300);
+    }, 2200);
 }
 
-function triggerEvolution() {
+function evolveTree() {
     const tree = document.getElementById('main-tree');
-    tree.style.filter = "brightness(2) blur(5px)";
+    tg.HapticFeedback.notificationOccurred('success');
     
+    tree.style.filter = "brightness(2) blur(5px)";
     setTimeout(() => {
         const stageIdx = Math.min(level - 1, stages.length - 1);
         tree.innerText = stages[stageIdx];
         tree.style.filter = "brightness(1) blur(0px)";
-        
-        // Telegram vibrasiyası (əgər varsa)
-        if (window.Telegram && window.Telegram.WebApp) {
-            window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
-        }
     }, 400);
 }
 
@@ -76,20 +92,18 @@ function updateUI() {
     document.getElementById('growth-percent').innerText = growth + "%";
 }
 
-function showPage(pageId, element) {
-    // Səhifələri gizlə/göstər
+function showPage(pageId, btn) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(pageId + '-section').classList.add('active');
-
-    // Menyu düymələrini yenilə
+    
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    element.classList.add('active');
+    btn.classList.add('active');
+    
+    tg.HapticFeedback.selectionChanged();
 }
 
-// İlkin başlatma
+// Başlangıçta çalıştır
 window.onload = () => {
-    if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.expand();
-        window.Telegram.WebApp.ready();
-    }
+    initUser();
+    updateUI();
 };
